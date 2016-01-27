@@ -1,0 +1,25 @@
+{
+  "name": "xfit",
+  "version": "1.0.0",
+  "description": "Training assistant",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \\\"Error: no test specified\\\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gottarts/xfit_be.git"
+  },
+  "author": "Got",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gottarts/xfit_be/issues"
+  },
+  "homepage": "https://github.com/gottarts/xfit_be#readme",
+  "dependencies": {
+    "bell": "^6.1.0",
+    "boom": "^3.1.2",
+    "hapi": "^12.1.0",
+    "hapi-auth-cookie": "^5.0.0"
+  }
+}
