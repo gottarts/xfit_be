@@ -10,15 +10,22 @@ var userSchema = new Mongoose.Schema({
         type: String,
         required: false
     },
-    username:{
+    username: {
         type: String,
         required: true
+    },
+    roles: {
+        type: [{
+            type: String,
+            enum: ['user', 'admin']
+        }],
+        default: ['user']
     },
     picture: {
         type: String,
         required: false
     },
-    box:{
+    box: {
         type: String,
         required: false
     },

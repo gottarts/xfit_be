@@ -6,25 +6,14 @@ var Authentication = require('./controllers/authentication');
  * that take care of the actions
  */
 exports.endpoints = [
-    // { method: 'GET',    path: '/',               config: Pages.index    },
-    // { method: 'GET',    path: '/login',          config: Pages.login    },
-    // { method: 'GET',    path: '/register',       config: Pages.register },
-    // { method: 'GET',    path: '/batmanshideout', config: Pages.secret   },
-
     {
         method: 'GET',
-        path: '/',
-        config: Authentication.index
-    },
-    {
-        method: 'GET',
-        path: '/login/twitter',
-        config: Authentication.loginTwitter
-    },
-    {
-        method: 'GET',
-        path: '/logout',
-        config: Authentication.logout
-    },
-    // { method: 'POST',   path: '/register',       config: Authentication.register },
+        path: '/handle_twitter_callback',
+        config: Authentication.callbackTwitter
+    }
 ];
+
+// server.route({method: 'GET', path: '/handle_facebook_callback', handler: function (req, res) {
+//   console.log(req.query)
+//   res(JSON.stringify(req.query, null, 2))
+// }})
