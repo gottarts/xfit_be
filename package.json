@@ -17,12 +17,14 @@
   },
   "homepage": "https://github.com/gottarts/xfit_be#readme",
   "dependencies": {
-    "bell": "^6.1.0",
     "boom": "^3.1.2",
-    "grant-hapi": "^3.5.5",
-    "hapi": "^12.1.0",
-    "hapi-auth-cookie": "^5.0.0",
+    "hapi": "^13.0.0",
+    "hapi-auth-jwt": "^4.0.0",
+    "joi": "^7.2.3",
+    "jsonwebtoken": "^5.5.4",
+    "moment": "*",
     "mongoose": "^4.3.7",
-    "yar": "^6.0.0"
+    "mongoose-auto-increment": "^5.0.1",
+    "nodemailer": "^0.7.1"
   }
 }
