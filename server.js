@@ -1,44 +1,44 @@
 'use strict';
 
 const Hapi = require('hapi');
-const yar = require('yar');
-const Boom = require('boom');
-const Moment = require('moment');
 const Config = require('./config/config');
 const Routes = require('./routes');
+const Db = require('./config/db').db;
 
+const validate = function (decoded, request, callback) {
+    // do your checks to see if the person is valid
+    // if (!people[decoded.id]) {
+    //   return callback(null, false);
+    // }
+    // else {
+      return callback(null, true);
+    //}
+};
+
+//App configuration
 var app = {};
 app.config = Config;
-
 var privateKey = app.config.key.privateKey;
 var ttl = app.config.key.tokenExpiry;
 
-//var server = Hapi.createServer(app.config.server.host, app.config.server.port, { cors: true });
-
 var server = new Hapi.Server();
 server.connection({ port: app.config.server.port });
+        // include our module here ↓↓
+server.register(require('hapi-auth-jwt2'), function (err) {
 
-// Validate function to be injected 
-var validate = function(token, callback) {
-    // Check token timestamp
-    var diff = Moment().diff(Moment(token.iat * 1000));
-    if (diff > ttl) {
-        return callback(null, false);
+    if(err){
+      console.log(err);
     }
-    callback(null, true, token);
-};
-// Plugins
-server.register([{
-    register: require('hapi-auth-jwt')
-}], function(err) {
-    server.auth.strategy('token', 'jwt', {
-        validateFunc: validate,
-        key: privateKey
+    server.auth.strategy('jwt', 'jwt',
+    { key: privateKey,          // Never Share your secret key
+      validateFunc: validate,            // validate function defined above
+      verifyOptions: { algorithms: [ 'HS256' ] } // pick a strong algorithm
     });
-
+    server.auth.default('jwt');
     server.route(Routes.endpoints);
 });
 
-server.start(function() {
-    console.log('Server started ', server.info.uri);
+
+server.start(function () {
+  console.log('Server running at:', server.info.uri);
 });

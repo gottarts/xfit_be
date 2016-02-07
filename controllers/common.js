@@ -7,14 +7,14 @@ var nodemailer = require("nodemailer"),
 var privateKey = Config.key.privateKey;
 
 // create reusable transport method (opens pool of SMTP connections)
-console.log(Config.email.username+"  "+Config.email.password);
-var smtpTransport = nodemailer.createTransport("SMTP", {
-    service: "Gmail",
-    auth: {
-        user: Config.email.username,
-        pass: Config.email.password
-    }
-});
+// console.log(Config.email.username+"  "+Config.email.password);
+// var smtpTransport = nodemailer.createTransport("SMTP", {
+//     service: "Gmail",
+//     auth: {
+//         user: Config.email.username,
+//         pass: Config.email.password
+//     }
+// });
 
 exports.decrypt = function(password) {
     return decrypt(password);

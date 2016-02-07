@@ -8,6 +8,7 @@ var Joi = require('joi'),
 var privateKey = Config.key.privateKey;
 
 exports.create = {
+    auth: false,
     validate: {
         payload: {
             userName: Joi.string().email().required(),
@@ -17,6 +18,7 @@ exports.create = {
     handler: function (request, reply) {
         request.payload.password = Common.encrypt(request.payload.password);
         request.payload.scope = "User";
+        request.payload.isVerified = true;
         User.saveUser(request.payload, function (err, user) {
             //console.log(err);
             if (!err) {
@@ -39,6 +41,7 @@ exports.create = {
 };
 
 exports.login = {
+    auth: false,
     validate: {
         payload: {
             userName: Joi.string().email().required(),
@@ -59,6 +62,7 @@ exports.login = {
                         id: user._id
                     };
                     var res = {
+                        id: user._id,
                         username: user.userName,
                         scope: user.scope,
                         token: Jwt.sign(tokenData, privateKey)
@@ -77,6 +81,26 @@ exports.login = {
         });
     }
 };
+
+exports.profile = {
+    auth: 'jwt',
+    handler: function (request, reply) {
+        var credentials = request.auth.credentials;
+        console.log(credentials);
+        Jwt.verify(request.auth.token.split(" ")[1], privateKey, function (err, decoded) {
+             if (credentials === undefined) return reply(Boom.forbidden("Non autorizzato"));
+             if (credentials.scope[0] != 'User'  && credentials.scope[0] != 'Admin' ) return reply(Boom.unauthorized("Only for users or admins"));
+            User.findUserById(request.auth.credentials.id, function (err, user) {
+                if (err) {
+                    console.error(err);
+                    return reply(Boom.badImplementation(err));
+                }
+                if (user === null) return reply(Boom.forbidden("Non autorizzato"));
+                return reply(JSON.stringify(user));
+            })
+        });
+    }
+}
 
 // exports.resendVerificationEmail = {
 //     validate: {
@@ -109,71 +133,50 @@ exports.login = {
 //     }
 // };
 
-exports.forgotPassword = {
-    validate: {
-        payload: {
-            userName: Joi.string().email().required()
-        }
-    },
-    handler: function (request, reply) {
-        User.findUser(request.payload.userName, function (err, user) {
-            if (!err) {
-                if (user === null) return reply(Boom.forbidden("invalid username"));
-                Common.sentMailForgotPassword(user);
-                reply("password is send to registered email id");
-            } else {
-                console.error(err);
-                return reply(Boom.badImplementation(err));
-            }
-        });
-    }
-};
+// exports.forgotPassword = {
+//     validate: {
+//         payload: {
+//             userName: Joi.string().email().required()
+//         }
+//     },
+//     handler: function (request, reply) {
+//         User.findUser(request.payload.userName, function (err, user) {
+//             if (!err) {
+//                 if (user === null) return reply(Boom.forbidden("invalid username"));
+//                 Common.sentMailForgotPassword(user);
+//                 reply("password is send to registered email id");
+//             } else {
+//                 console.error(err);
+//                 return reply(Boom.badImplementation(err));
+//             }
+//         });
+//     }
+// };
 
-exports.verifyEmail = {
-    handler: function (request, reply) {
-        Jwt.verify(request.headers.authorization.split(" ")[1], privateKey, function (err, decoded) {
-            if (decoded === undefined) return reply(Boom.forbidden("invalid verification link"));
-            if (decoded.scope[0] != "User") return reply(Boom.forbidden("invalid verification link"));
-            User.findUserByIdAndUserName(decoded.id, decoded.userName, function (err, user) {
-                if (err) {
-                    console.error(err);
-                    return reply(Boom.badImplementation(err));
-                }
-                if (user === null) return reply(Boom.forbidden("invalid verification link"));
-                if (user.isVerified === true) return reply(Boom.forbidden("account is already verified"));
-                user.isVerified = true;
-                User.updateUser(user, function (err, user) {
-                    if (err) {
-                        console.error(err);
-                        return reply(Boom.badImplementation(err));
-                    }
-                    return reply("account sucessfully verified");
+// exports.verifyEmail = {
+//     handler: function (request, reply) {
+//         Jwt.verify(request.headers.authorization.split(" ")[1], privateKey, function (err, decoded) {
+//             if (decoded === undefined) return reply(Boom.forbidden("invalid verification link"));
+//             if (decoded.scope[0] != "User") return reply(Boom.forbidden("invalid verification link"));
+//             User.findUserByIdAndUserName(decoded.id, decoded.userName, function (err, user) {
+//                 if (err) {
+//                     console.error(err);
+//                     return reply(Boom.badImplementation(err));
+//                 }
+//                 if (user === null) return reply(Boom.forbidden("invalid verification link"));
+//                 if (user.isVerified === true) return reply(Boom.forbidden("account is already verified"));
+//                 user.isVerified = true;
+//                 User.updateUser(user, function (err, user) {
+//                     if (err) {
+//                         console.error(err);
+//                         return reply(Boom.badImplementation(err));
+//                     }
+//                     return reply("account sucessfully verified");
+// 
+//                 })
+//             })
+// 
+//         });
+//     }
+// };
 
-                })
-            })
-
-        });
-    }
-};
-
-exports.profile = {
-    handler: function (request, reply) {
-        Jwt.verify(request.headers.authorization.split(" ")[1], privateKey, function (err, decoded) {
-            if (decoded === undefined) return reply(Boom.forbidden("Non autorizzato"));
-            if (decoded.scope[0] != "User" || decoded.scope[0] != "Admin") return reply(Boom.forbidden("invalid verification link"));
-            User.findUserByIdAndUserName(decoded.id, decoded.userName, function (err, user) {
-                if (err) {
-                    console.error(err);
-                    return reply(Boom.badImplementation(err));
-                }
-                if (user === null) return reply(Boom.forbidden("Non autorizzato"));
-                return reply(JSON.stringify(user));
-            })
-
-        });
-    },
-    auth: {
-        strategy: 'token',
-        scope: ['User']
-    }
-};

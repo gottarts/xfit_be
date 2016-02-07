@@ -13,11 +13,5 @@ module.exports = {
     key: {
         privateKey: '37LvDSm4XvjYOh9Y',
         tokenExpiry: 1 * 30 * 1000 * 60 //1 hour
-    },
-    email: {
-        username: "onitsuka90@gmail.com",
-        password: "34093440151",
-        accountName: "XFit",
-        verifyEmailUrl: "verifyEmail"
     }
 };

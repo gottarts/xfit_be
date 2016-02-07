@@ -1,10 +1,5 @@
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
-    autoIncrement = require('mongoose-auto-increment'),
-    db = require('../config/db').db;
-
-autoIncrement.initialize(db);
-
+    Schema = mongoose.Schema;
 
 var User = new Schema({
     userName: {
@@ -27,33 +22,28 @@ var User = new Schema({
     }
 });
 
-User.plugin(autoIncrement.plugin, {
-    model: 'user',
-    field: '_id'
-});
 
-User.statics.saveUser = function(requestData, callback) {
+User.statics.saveUser = function (requestData, callback) {
     this.create(requestData, callback);
 };
 
-User.statics.updateUser = function(user, callback) {
+User.statics.updateUser = function (user, callback) {
     user.save(callback);
 };
 
-User.statics.findUser = function(userName, callback) {
+User.statics.findUser = function (userName, callback) {
     this.findOne({
         userName: userName
     }, callback);
 };
 
-User.statics.findUserByIdAndUserName = function(id, userName, callback) {
+User.statics.findUserById = function (id, callback) {
     this.findOne({
-        userName: userName,
         _id: id
     }, callback);
 };
 
-var user = mongoose.model('user', User);
+var user = mongoose.model('User', User);
 
 /** export schema */
 module.exports = {
