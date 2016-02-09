@@ -7,11 +7,11 @@ var Joi = require('joi'),
 
 var privateKey = Config.key.privateKey;
 
-exports.create = {
+exports.register = {
     auth: false,
     validate: {
         payload: {
-            userName: Joi.string().email().required(),
+            email: Joi.string().email().required(),
             password: Joi.string().required()
         }
     },
@@ -23,7 +23,7 @@ exports.create = {
             //console.log(err);
             if (!err) {
                 var tokenData = {
-                    userName: user.userName,
+                    email: user.email,
                     scope: [user.scope],
                     id: user._id,
                     isVerified: true
@@ -44,32 +44,35 @@ exports.login = {
     auth: false,
     validate: {
         payload: {
-            userName: Joi.string().email().required(),
+            email: Joi.string().email().required(),
             password: Joi.string().required()
         }
     },
     handler: function (request, reply) {
-        User.findUser(request.payload.userName, function (err, user) {
+
+        User.findUser(request.payload.email, function (err, user) {
+            console.log(user);
+            console.log(err);
             if (!err) {
-                if (user === null) return reply(Boom.forbidden("invalid username or password"));
+                if (user === null) return reply(Boom.forbidden("invalid email or password"));
                 if (request.payload.password === Common.decrypt(user.password)) {
 
                     if (!user.isVerified) return reply("Your email address is not verified. please verify your email address to proceed");
 
                     var tokenData = {
-                        userName: user.userName,
+                        email: user.email,
                         scope: [user.scope],
                         id: user._id
                     };
                     var res = {
                         id: user._id,
-                        username: user.userName,
+                        email: user.email,
                         scope: user.scope,
                         token: Jwt.sign(tokenData, privateKey)
                     };
 
                     reply(res);
-                } else reply(Boom.forbidden("invalid username or password"));
+                } else reply(Boom.forbidden("invalid email or password"));
             } else {
                 if (11000 === err.code || 11001 === err.code) {
                     reply(Boom.forbidden("please provide another user email"));
@@ -88,8 +91,8 @@ exports.profile = {
         var credentials = request.auth.credentials;
         console.log(credentials);
         Jwt.verify(request.auth.token.split(" ")[1], privateKey, function (err, decoded) {
-             if (credentials === undefined) return reply(Boom.forbidden("Non autorizzato"));
-             if (credentials.scope[0] != 'User'  && credentials.scope[0] != 'Admin' ) return reply(Boom.unauthorized("Only for users or admins"));
+            if (credentials === undefined) return reply(Boom.forbidden("Non autorizzato"));
+            if (credentials.scope[0] != 'User' && credentials.scope[0] != 'Admin') return reply(Boom.unauthorized("Only for users or admins"));
             User.findUserById(request.auth.credentials.id, function (err, user) {
                 if (err) {
                     console.error(err);
@@ -102,29 +105,47 @@ exports.profile = {
     }
 }
 
+exports.update = {
+    auth: {
+        strategy: 'jwt',
+        scope: ['User', 'Admin']
+    },
+    handler: function (request, reply) {
+        User.findUserById(request.auth.credentials.id, function (err, user) {
+            if (err) return reply(Boom.badImplementation(err));
+            if (user === null) return reply(Boom.forbidden("Non autorizzato"));
+            user.username = request.payload.username;
+            User.updateUser(user, function (err, user) {
+
+                return reply(JSON.stringify(user));
+            });
+        })
+    }
+}
+
 // exports.resendVerificationEmail = {
 //     validate: {
 //         payload: {
-//             userName: Joi.string().email().required(),
+//             email: Joi.string().email().required(),
 //             password: Joi.string().required()
 //         }
 //     },
 //     handler: function(request, reply) {
-//         User.findUser(request.payload.userName, function(err, user) {
+//         User.findUser(request.payload.email, function(err, user) {
 //             if (!err) {
-//                 if (user === null) return reply(Boom.forbidden("invalid username or password"));
+//                 if (user === null) return reply(Boom.forbidden("invalid email or password"));
 //                 if (request.payload.password === Common.decrypt(user.password)) {
 // 
 //                     if(user.isVerified) return reply("your email address is already verified");
 // 
 //                      var tokenData = {
-//                         userName: user.userName,
+//                         email: user.email,
 //                         scope: [user.scope],
 //                         id: user._id
 //                     };
 //                     Common.sentMailVerificationLink(user,Jwt.sign(tokenData, privateKey));
 //                     reply("account verification link is sucessfully send to an email id");
-//                 } else reply(Boom.forbidden("invalid username or password"));
+//                 } else reply(Boom.forbidden("invalid email or password"));
 //             } else {                
 //                 console.error(err);
 //                 return reply(Boom.badImplementation(err));
@@ -136,13 +157,13 @@ exports.profile = {
 // exports.forgotPassword = {
 //     validate: {
 //         payload: {
-//             userName: Joi.string().email().required()
+//             email: Joi.string().email().required()
 //         }
 //     },
 //     handler: function (request, reply) {
-//         User.findUser(request.payload.userName, function (err, user) {
+//         User.findUser(request.payload.email, function (err, user) {
 //             if (!err) {
-//                 if (user === null) return reply(Boom.forbidden("invalid username"));
+//                 if (user === null) return reply(Boom.forbidden("invalid email"));
 //                 Common.sentMailForgotPassword(user);
 //                 reply("password is send to registered email id");
 //             } else {
@@ -158,7 +179,7 @@ exports.profile = {
 //         Jwt.verify(request.headers.authorization.split(" ")[1], privateKey, function (err, decoded) {
 //             if (decoded === undefined) return reply(Boom.forbidden("invalid verification link"));
 //             if (decoded.scope[0] != "User") return reply(Boom.forbidden("invalid verification link"));
-//             User.findUserByIdAndUserName(decoded.id, decoded.userName, function (err, user) {
+//             User.findUserByIdAndemail(decoded.id, decoded.email, function (err, user) {
 //                 if (err) {
 //                     console.error(err);
 //                     return reply(Boom.badImplementation(err));

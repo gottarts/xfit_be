@@ -3,7 +3,7 @@
 const Hapi = require('hapi');
 const Config = require('./config/config');
 const Routes = require('./routes');
-const Db = require('./config/db').db;
+//const Db = require('./config/db').db;
 
 const validate = function (decoded, request, callback) {
     // do your checks to see if the person is valid
@@ -42,3 +42,5 @@ server.register(require('hapi-auth-jwt2'), function (err) {
 server.start(function () {
   console.log('Server running at:', server.info.uri);
 });
+
+module.exports = server;

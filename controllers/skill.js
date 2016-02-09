@@ -7,7 +7,10 @@ var Joi = require('joi'),
 var privateKey = Config.key.privateKey;
 
 exports.create = {
-    auth: 'jwt',
+    auth:{
+        strategy: 'jwt',
+        scope: 'Admin'   
+    },
     validate: {
         payload: {
             name: Joi.string().required()
@@ -32,7 +35,6 @@ exports.getSkills = {
     auth: 'jwt',
     handler: function (request, reply) {
         var credentials = request.auth.credentials;
-        console.log(credentials);
         Jwt.verify(request.auth.token.split(" ")[1], privateKey, function (err, decoded) {
             if (credentials === undefined) return reply(Boom.forbidden("Non autorizzato"));
             if (credentials.scope[0] != 'User' && credentials.scope[0] != 'Admin') return reply(Boom.unauthorized("Only for users or admins"));
@@ -45,5 +47,22 @@ exports.getSkills = {
                 return reply(skills);
             })
         });
+    }
+}
+
+exports.getSkill = {
+    auth: 'jwt',
+    handler: function(request, reply){
+        if (request.auth.credentials.scope[0] == 'Admin') {
+            Skill.findSkillById(request.params.skillId, function(err, skill){
+                if (err) {
+                    console.error(err);
+                    return reply(Boom.badImplementation(err));
+                }
+                return reply(skill);
+            })
+        } else {
+            reply(Boom.unauthorized("Only for admins"));
+        }
     }
 }
