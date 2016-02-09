@@ -1,4 +1,4 @@
-var User = require('./controllers/User');
+var User = require('./controllers/user');
 var Skill = require('./controllers/skill');
 var Pr = require('./controllers/pr');
 /**
