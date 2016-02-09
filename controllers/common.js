@@ -1,6 +1,5 @@
 
-var nodemailer = require("nodemailer"),
-    Config = require('../config/config'),
+var Config = require('../config/config'),
     crypto = require('crypto'),
     algorithm = 'aes-256-ctr';
 

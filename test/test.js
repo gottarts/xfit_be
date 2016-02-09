@@ -1,33 +1,41 @@
-var test   = require('tape');
-var JWT    = require('jsonwebtoken');
-var secret = 'NeverShareYourSecret';
+const Code = require('code');
+const Lab = require('lab');
+const lab = exports.lab = Lab.script();
+const server = require('../server');
+// var JWT    = require('jsonwebtoken');
+// var secret = 'NeverShareYourSecret';
 
-var server = require('../server'); // test server which in turn loads our module
+//var server = require('../server'); // test server which in turn loads our module
 
-test("Attempt to access restricted content (without auth token)", function(t) {
-  var options = {
-    method: "GET",
-    url: "/user/profile"
-  };
-  // server.inject lets us simulate an http request
-  server.inject(options, function(response) {
-    t.equal(response.statusCode, 401, "No Token should fail");
-    server.stop(t.end);
-  });
+lab.experiment('Test sull\'autenticazione', () => {
+    lab.test("Attempt to access restricted content (without auth token)", (done) => {
+        var options = {
+            method: "GET",
+            url: "/user/profile"
+        };
+        // server.inject lets us simulate an http request
+        server.inject(options, function (response) {
+            Code.expect(response.statusCode).to.equal(401);
+            done();
+        });
+    });
+
+    lab.test("Attempt to access restricted content (with an INVALID Token)", (done) => {
+        var options = {
+            method: "GET",
+            url: "/user/profile",
+            headers: { authorization: "Bearer fails.validation" }
+        };
+        // server.inject lets us simulate an http request
+        server.inject(options, function (response) {
+            Code.expect(response.statusCode).to.equal(401);
+            done();
+        });
+    });
 });
 
-test("Attempt to access restricted content (with an INVALID Token)", function(t) {
-  var options = {
-    method: "GET",
-    url: "/user/profile",
-    headers: { authorization: "Bearer fails.validation" }
-  };
-  // server.inject lets us simulate an http request
-  server.inject(options, function(response) {
-    t.equal(response.statusCode, 401, "INVALID Token should fail");
-    server.stop(t.end);
-  });
-});
+
+
 // 
 // test("Malformed JWT", function(t) {
 //   // use the token as the 'authorization' header in requests

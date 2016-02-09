@@ -1,35 +1,32 @@
 {
-  "name": "xfit",
-  "version": "1.0.0",
-  "description": "Training assistant",
-  "main": "server.js",
-  "scripts": {
-    "quick": "./node_modules/tape/bin/tape ./test/*.js | tap-spec/bin/cmd.js",
-    "test": "istanbul cover ./node_modules/tape/bin/tape ./test/*.js  | tap-spec/bin/cmd.js",
-    "coverage": "istanbul cover ./node_modules/tape/bin/tape ./test/*.js && istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/gottarts/xfit_be.git"
-  },
-  "author": "Got",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/gottarts/xfit_be/issues"
-  },
-  "homepage": "https://github.com/gottarts/xfit_be#readme",
-  "dependencies": {
-    "boom": "^3.1.2",
-    "hapi": "^13.0.0",
-    "hapi-auth-jwt2": "^5.3.2",
-    "joi": "^7.2.3",
-    "jsonwebtoken": "^5.5.4",
-    "mongoose": "^4.3.7",
-    "mongoose-auto-increment": "^5.0.1"
-  },
-  "devDependencies": {
-    "istanbul": "^0.4.2",
-    "tap-spec": "^4.1.1",
-    "tape": "^4.4.0"
-  }
+    "name": "xfit",
+    "version": "1.0.0",
+    "description": "Training assistant",
+    "main": "server.js",
+    "scripts": {
+        "test": "lab",
+        "test-cov-html": "lab -r html -o coverage/coverage.html"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/gottarts/xfit_be.git"
+    },
+    "author": "Got",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/gottarts/xfit_be/issues"
+    },
+    "homepage": "https://github.com/gottarts/xfit_be#readme",
+    "dependencies": {
+        "boom": "^3.1.2",
+        "hapi": "^13.0.0",
+        "hapi-auth-jwt2": "^5.3.2",
+        "joi": "^7.2.3",
+        "jsonwebtoken": "^5.5.4",
+        "mongoose": "^4.3.7"
+    },
+    "devDependencies": {
+        "code": "^2.1.0",
+        "lab": "^8.2.0"
+    }
 }
