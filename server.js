@@ -3,7 +3,7 @@
 const Hapi = require('hapi');
 const Config = require('./config/config');
 const Routes = require('./routes');
-//const Db = require('./config/db').db;
+const Db = require('./config/db').db;
 
 const validate = function (decoded, request, callback) {
     // do your checks to see if the person is valid

@@ -89,7 +89,6 @@ exports.profile = {
     auth: 'jwt',
     handler: function (request, reply) {
         var credentials = request.auth.credentials;
-        console.log(credentials);
         Jwt.verify(request.auth.token.split(" ")[1], privateKey, function (err, decoded) {
             if (credentials === undefined) return reply(Boom.forbidden("Non autorizzato"));
             if (credentials.scope[0] != 'User' && credentials.scope[0] != 'Admin') return reply(Boom.unauthorized("Only for users or admins"));
@@ -99,7 +98,7 @@ exports.profile = {
                     return reply(Boom.badImplementation(err));
                 }
                 if (user === null) return reply(Boom.forbidden("Non autorizzato"));
-                return reply(JSON.stringify(user));
+                return reply(user);
             })
         });
     }
@@ -115,9 +114,12 @@ exports.update = {
             if (err) return reply(Boom.badImplementation(err));
             if (user === null) return reply(Boom.forbidden("Non autorizzato"));
             user.username = request.payload.username;
+            user.picture = request.payload.picture;
             User.updateUser(user, function (err, user) {
-
-                return reply(JSON.stringify(user));
+                if (err) {
+                    return reply(Boom.badImplementation(err));
+                }
+                return reply(user);
             });
         })
     }

@@ -45,12 +45,3 @@ exports.getAllSkillsForUser = {
         });
     }
 }
-
-
-// 
-// {
-//             value: request.payload.value,
-//             measure: request.payload.measure,
-//             user: request.payload.user,
-//             skill: request.payload.skill
-//         } 56b4b77748e955a01dcab249 56b4b7dc48e955a01dcab24a

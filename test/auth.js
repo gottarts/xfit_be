@@ -2,8 +2,8 @@ const Code = require('code');
 const Lab = require('lab');
 const lab = exports.lab = Lab.script();
 const server = require('../server');
-// var JWT    = require('jsonwebtoken');
-// var secret = 'NeverShareYourSecret';
+const JWT    = require('jsonwebtoken');
+const secret = 'otifermiotiformi';
 
 //var server = require('../server'); // test server which in turn loads our module
 
@@ -32,29 +32,26 @@ lab.experiment('Test sull\'autenticazione', () => {
             done();
         });
     });
+
+    lab.test("Malformed JWT", (done) => {
+        // use the token as the 'authorization' header in requests
+         var token = JWT.sign({ "id": 1 ,"name":"Old Greg" }, 'incorrectSecret');
+        // console.log(token);
+        var options = {
+            method: "GET",
+            url: "/user/profile",
+            headers: { authorization: "Bearer " + token }
+        };
+        // server.inject lets us simulate an http request
+        server.inject(options, function (response) {
+            // console.log(response.result);
+            // console.log(' '); // blank line
+            Code.expect(response.statusCode).to.equal(401);
+            done();
+        });
+    });
 });
 
-
-
-// 
-// test("Malformed JWT", function(t) {
-//   // use the token as the 'authorization' header in requests
-//   // var token = jwt.sign({ "id": 1 ,"name":"Old Greg" }, 'incorrectSecret');
-//   // console.log(token);
-//   var options = {
-//     method: "POST",
-//     url: "/privado",
-//     headers: { authorization: "Bearer my.invalid.token" }
-//   };
-//   // server.inject lets us simulate an http request
-//   server.inject(options, function(response) {
-//     // console.log(response.result);
-//     // console.log(' '); // blank line
-//     t.equal(response.statusCode, 401, "INVALID Token should fail");
-//     // t.equal(JSON.parse(response.result).msg, 'Invalid Token', "INVALID Token should fail");
-//     t.end();
-//   });
-// });
 // 
 // test("Try using a token with missing characters in body", function(t) {
 //   // use the token as the 'authorization' header in requests
