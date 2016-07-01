@@ -41,6 +41,7 @@ server.register(require('hapi-auth-jwt2'), function (err) {
 
 server.start(function () {
   console.log('Server running at:', server.info.uri);
+  console.log('Process ENV Port:', process.env.port);
 });
 
 module.exports = server;
