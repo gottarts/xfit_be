@@ -7,6 +7,7 @@ var Joi = require('joi'),
 var privateKey = Config.key.privateKey;
 
 exports.create = {
+    tags: ['api', 'Skill'],
     auth:{
         strategy: 'jwt',
         scope: 'Admin'   
@@ -32,6 +33,7 @@ exports.create = {
 }
 
 exports.getSkills = {
+    tags: ['api', 'Skill'],
     auth: 'jwt',
     handler: function (request, reply) {
         var credentials = request.auth.credentials;
@@ -51,6 +53,7 @@ exports.getSkills = {
 }
 
 exports.getSkill = {
+    tags: ['api', 'Skill'],
     auth: 'jwt',
     handler: function(request, reply){
         if (request.auth.credentials.scope[0] == 'Admin') {

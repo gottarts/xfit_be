@@ -8,6 +8,7 @@ var Joi = require('joi'),
 var privateKey = Config.key.privateKey;
 
 exports.register = {
+    tags: ['api', 'Auth'],
     auth: false,
     validate: {
         payload: {
@@ -41,6 +42,7 @@ exports.register = {
 };
 
 exports.login = {
+    tags: ['api', 'Auth'],
     auth: false,
     validate: {
         payload: {
@@ -86,6 +88,7 @@ exports.login = {
 };
 
 exports.profile = {
+    tags: ['api', 'User'],
     auth: 'jwt',
     handler: function (request, reply) {
         var credentials = request.auth.credentials;
@@ -105,6 +108,7 @@ exports.profile = {
 }
 
 exports.update = {
+    tags: ['api', 'User'],
     auth: {
         strategy: 'jwt',
         scope: ['User', 'Admin']
