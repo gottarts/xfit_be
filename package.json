@@ -1,32 +1,35 @@
 {
-    "name": "xfit",
-    "version": "1.0.0",
-    "description": "Training assistant",
-    "main": "server.js",
-    "scripts": {
-        "test": "lab",
-        "test-cov-html": "lab -r html -o coverage/coverage.html"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/gottarts/xfit_be.git"
-    },
-    "author": "Got",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/gottarts/xfit_be/issues"
-    },
-    "homepage": "https://github.com/gottarts/xfit_be#readme",
-    "dependencies": {
-        "boom": "^3.1.2",
-        "hapi": "^13.0.0",
-        "hapi-auth-jwt2": "^5.3.2",
-        "joi": "^7.2.3",
-        "jsonwebtoken": "^5.5.4",
-        "mongoose": "^4.3.7"
-    },
-    "devDependencies": {
-        "code": "^2.1.0",
-        "lab": "^8.2.0"
-    }
+  "name": "xfit",
+  "version": "1.0.0",
+  "description": "Training assistant",
+  "main": "server.js",
+  "scripts": {
+    "test": "lab",
+    "test-cov-html": "lab -r html -o coverage/coverage.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gottarts/xfit_be.git"
+  },
+  "author": "Got",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gottarts/xfit_be/issues"
+  },
+  "homepage": "https://github.com/gottarts/xfit_be#readme",
+  "dependencies": {
+    "boom": "^3.1.2",
+    "hapi": "^13.0.0",
+    "hapi-auth-jwt2": "^5.3.2",
+    "inert": "^4.0.0",
+    "joi": "^8.0.0",
+    "jsonwebtoken": "^5.5.4",
+    "lout": "^9.0.1",
+    "mongoose": "^4.3.7",
+    "vision": "^4.1.0"
+  },
+  "devDependencies": {
+    "code": "^2.1.0",
+    "lab": "^8.2.0"
+  }
 }

@@ -24,8 +24,10 @@ var ttl = app.config.key.tokenExpiry;
 var server = new Hapi.Server();
 server.connection({ port: app.config.server.port });
         // include our module here ↓↓
-server.register(require('hapi-auth-jwt2'), function (err) {
-
+server.register([require('hapi-auth-jwt2'), 
+                require('vision'), 
+                require('inert'), 
+                { register: require('lout') }], function (err) {
     if(err){
       console.log(err);
     }
@@ -43,5 +45,6 @@ server.start(function () {
   console.log('Server running at:', server.info.uri);
   console.log('Process ENV Port:', process.env.port);
 });
+
 
 module.exports = server;
