@@ -35,6 +35,19 @@ exports.sentMailForgotPassword = function(user) {
     mail(from, user.userName , "Account password", mailbody);
 };
 
+exports.welcomeMessage = {
+    auth: false,
+    // validate: {
+    //     payload: {
+    //         email: Joi.string().email().required(),
+    //         password: Joi.string().required()
+    //     }
+    // },
+    handler: function (request, reply) {
+        reply('Welcome to XFit');
+    }
+};
+
 
 // method to decrypt data(password) 
 function decrypt(password) {
