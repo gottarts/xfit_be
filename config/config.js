@@ -6,7 +6,7 @@ module.exports = {
     database: {
         username: 'gottarts',
         password: 'macbook',
-        host: 'ds057204.mongolab.com',
+        host: 'ds057204.mlab.com',
         db: 'xfit',
         port: 57204
     },
