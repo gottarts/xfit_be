@@ -11,7 +11,7 @@ lab.experiment('Test sull\'autenticazione', () => {
     lab.test("Attempt to access restricted content (without auth token)", (done) => {
         var options = {
             method: "GET",
-            url: "/user/profile"
+            url: "/v1/user/profile"
         };
         // server.inject lets us simulate an http request
         server.inject(options, function (response) {
@@ -23,7 +23,7 @@ lab.experiment('Test sull\'autenticazione', () => {
     lab.test("Attempt to access restricted content (with an INVALID Token)", (done) => {
         var options = {
             method: "GET",
-            url: "/user/profile",
+            url: "/v1/user/profile",
             headers: { authorization: "Bearer fails.validation" }
         };
         // server.inject lets us simulate an http request
@@ -39,7 +39,7 @@ lab.experiment('Test sull\'autenticazione', () => {
         // console.log(token);
         var options = {
             method: "GET",
-            url: "/user/profile",
+            url: "/v1/user/profile",
             headers: { authorization: "Bearer " + token }
         };
         // server.inject lets us simulate an http request
