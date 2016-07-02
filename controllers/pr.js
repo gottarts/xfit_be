@@ -1,22 +1,26 @@
 var Joi = require('joi'),
+    mongoose = require('mongoose'),
     Boom = require('boom'),
     Common = require('./common'),
     Config = require('../config/config'),
     Jwt = require('jsonwebtoken'),
-    Pr = require('../models/pr').Pr;
+    Pr = require('../models/pr').UserSkill;
 var privateKey = Config.key.privateKey;
 
 exports.create = {
+    tags: ['api', 'Pr'],
     auth: 'jwt',
     validate: {
         payload: {
+            user: Joi.string(),
+            skill: Joi.string(),
             value: Joi.number(),
             measure: Joi.string().valid('Kg')
         }
     },
     handler: function (request, reply) {
-        var pr = new Pr;
-        console.log(request.payload);
+        var pr = new Pr();
+
         pr.user = request.payload.user;
         pr.skill = request.payload.skill;
         pr.value = request.payload.value;
@@ -31,10 +35,11 @@ exports.create = {
 }
 
 exports.getAllSkillsForUser = {
+    tags: ['api', 'Pr'],
     auth: 'jwt',
     handler: function(request, reply){
         Pr
-        .findOne({ user: request.params.user})
+        .find({ user: request.query.user})
         .populate('user skill')
         .exec(function(err, us){
            if (err) {
@@ -45,3 +50,26 @@ exports.getAllSkillsForUser = {
         });
     }
 }
+
+exports.getSkillForUser = {
+    tags: ['api', 'Pr'],
+    auth: 'jwt',
+    handler: function(request, reply){
+        console.log(request.query);
+        //console.log(request.query.user.toObjectId());
+        Pr
+        .find({ user: request.query.user.toObjectId()})
+        .where({skill: request.query.skill.toObjectId()})
+        .populate('user skill')
+        .exec(function(err, us){
+           if (err) {
+               reply(err);
+           } else {
+                reply(us);
+           } 
+        });
+    }
+}
+
+
+

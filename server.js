@@ -30,10 +30,12 @@ server.connection({ port: app.config.server.port });
 
 const swaggerOptions = {
     info: {
+        //basePath: '/v1',
         version: Pack.version,
         title: 'XFit',
         description: 'This web API was built to demonstrate some of the hapi features and functionality.'
     },
+    basePath: '/v1/',
     tags: [{
         'name': 'Auth',
         'description': 'Metodi di autenticazione'

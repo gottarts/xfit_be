@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
 
 var User = new Schema({
     email: { type: String, unique: true, required: true },
-    password: { type: String,  required: true },
+    password: { type: String,  required: true, select: false },
     scope: { type: String, enum: ['User', 'Admin'], required: true},
     isVerified: { type: Boolean, default: false},
     username: { type: String, unique: true, required: false},

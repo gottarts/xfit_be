@@ -37,16 +37,16 @@ exports.sentMailForgotPassword = function(user) {
 
 exports.welcomeMessage = {
     auth: false,
-    // validate: {
-    //     payload: {
-    //         email: Joi.string().email().required(),
-    //         password: Joi.string().required()
-    //     }
-    // },
     handler: function (request, reply) {
         reply('Welcome to XFit');
     }
 };
+
+String.prototype.toObjectId = function() {
+  var ObjectId = (require('mongoose').Types.ObjectId);
+  return new ObjectId(this.toString());
+};
+
 
 
 // method to decrypt data(password) 

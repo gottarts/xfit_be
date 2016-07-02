@@ -10,8 +10,31 @@ var PrSchema = new Schema({
     earned : { type : Date, default: Date.now }
 });
 
+// Metodi
+
+PrSchema.statics.savePr = function (requestData, callback) {
+    this.create(requestData, callback);
+}
+
+PrSchema.statics.updatePr = function (user, callback) {
+    user.save(callback);
+};
+
+PrSchema.statics.findPrByName = function (name, callback) {
+    this.findOne({
+        Name: name
+    }, callback);
+};
+
+PrSchema.statics.findPrById = function (id, callback) {
+    this.findOne({
+        _id: id
+    }, callback);
+};
+
 var Pr = mongoose.model('UserSkill', PrSchema);
 
+/** export schema */
 module.exports = {
     UserSkill: Pr
 };

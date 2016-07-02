@@ -7,18 +7,19 @@ var Common = require ('./controllers/common')
 exports.endpoints = [
     { method: 'GET', path: '/', config: Common.welcomeMessage,  },
     //Auth methods
-    { method: 'POST', path: '/register', config: User.register },
-    { method: 'POST', path: '/login', config: User.login },
+    { method: 'POST', path: '/v1/register', config: User.register },
+    { method: 'POST', path: '/v1/login', config: User.login },
     //User methods
-    { method: 'GET', path: '/user/profile', config: User.profile },
-    { method: 'POST', path: '/user/update', config: User.update },
+    { method: 'GET', path: '/v1/user/profile', config: User.profile },
+    { method: 'POST', path: '/v1/user/update', config: User.update },
     
     //Skill methods
-    { method: 'POST', path: '/skill', config: Skill.create },
-    { method: 'GET', path: '/skill', config: Skill.getSkills }, //GET tutte le skill
-    { method: 'GET', path: '/skill/{skillId}', config: Skill.getSkill }, //GET singola skill
+    { method: 'POST', path: '/v1/skill', config: Skill.create },
+    { method: 'GET', path: '/v1/skill', config: Skill.getSkills }, //GET tutte le skill
+    { method: 'GET', path: '/v1/skill/{skillId}', config: Skill.getSkill }, //GET singola skill
         
     //UserSkill methods
-    { method: 'POST', path: '/pr', config: Pr.create },
-    { method: 'GET', path: '/pr/{user}', config: Pr.getAllSkillsForUser }
+    { method: 'POST', path: '/v1/pr', config: Pr.create },
+    { method: 'GET', path: '/v1/pr', config: Pr.getAllSkillsForUser },
+    { method: 'GET', path: '/v1/pr/details', config: Pr.getSkillForUser }
 ];

@@ -8,6 +8,7 @@ var Joi = require('joi'),
 var privateKey = Config.key.privateKey;
 
 exports.register = {
+    description: 'Registrazione dell\'utente',
     tags: ['api', 'Auth'],
     auth: false,
     validate: {
