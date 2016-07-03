@@ -120,6 +120,7 @@ exports.update = {
             if (user === null) return reply(Boom.forbidden("Non autorizzato"));
             user.username = request.payload.username;
             user.picture = request.payload.picture;
+            user.description = request.payload.description;
             User.updateUser(user, function (err, user) {
                 if (err) {
                     return reply(Boom.badImplementation(err));

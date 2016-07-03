@@ -7,7 +7,8 @@ var User = new Schema({
     scope: { type: String, enum: ['User', 'Admin'], required: true},
     isVerified: { type: Boolean, default: false},
     username: { type: String, unique: true, required: false},
-    picture: { type: String, require: false, default: "default_pic.png"}
+    picture: { type: String, required: false, default: "default_pic.png"},
+    description: {type: String, required: false}
 });
 
 User.statics.saveUser = function (requestData, callback) {
