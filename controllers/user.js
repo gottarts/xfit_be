@@ -54,7 +54,7 @@ exports.login = {
     handler: function (request, reply) {
 
         User.findUser(request.payload.email, function (err, user) {
-            console.log(user);
+            //console.log(user);
             console.log(err);
             if (!err) {
                 if (user === null) return reply(Boom.forbidden("invalid email or password"));
