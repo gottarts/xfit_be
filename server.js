@@ -8,15 +8,15 @@ const Pack = require('./package');
 const Config = require('./config/config');
 const Routes = require('./routes');
 const Db = require('./config/db').db;
+const Common = require('./controllers/common');
 
 const validate = function (decoded, request, callback) {
-  // do your checks to see if the person is valid
-  // if (!people[decoded.id]) {
+  // if (!Common.validateToken(decoded.id)) {
   //   return callback(null, false);
   // }
   // else {
-  return callback(null, true);
-  //}
+    return callback(null, true);
+  // }
 };
 
 //App configuration
@@ -28,51 +28,17 @@ var ttl = app.config.key.tokenExpiry;
 var server = new Hapi.Server();
 server.connection({ port: app.config.server.port });
 
-const swaggerOptions = {
-    info: {
-        //basePath: '/v1',
-        version: Pack.version,
-        title: 'XFit',
-        description: 'This web API was built to demonstrate some of the hapi features and functionality.'
-    },
-    basePath: '/v1/',
-    tags: [{
-        'name': 'Auth',
-        'description': 'Metodi di autenticazione'
-        
-    }, {
-        'name': 'User',
-        'description': 'Metodi degli utenti'
-        
-    }]
-};
-
-const goodOptions = {
-  ops: {
-        interval: 1000
-    },
-    reporters: {
-        console: [{
-            module: 'good-squeeze',
-            name: 'Squeeze',
-            args: [{ log: '*', response: '*' }]
-        }, {
-            module: 'good-console'
-        }, 'stdout']
-    }
-};
-
 // include our module here ↓↓
 server.register([require('hapi-auth-jwt2'),
   Vision,
   Inert,
   {
     'register': HapiSwagger,
-    'options': swaggerOptions
+    'options': Config.swaggerOptions
   },
   {
     register: require('good'),
-    'options': goodOptions
+    'options': Config.goodOptions
   }], function (err) {
     if (err) {
       console.log(err);
@@ -90,7 +56,6 @@ server.register([require('hapi-auth-jwt2'),
 
 server.start(function () {
   console.log('Server running at:', server.info.uri);
-  console.log('Process ENV Port:', process.env.port);
 });
 
 
