@@ -35,6 +35,7 @@ exports.register = {
                 reply(Jwt.sign(tokenData, privateKey));
             } else {
                 if (11000 === err.code || 11001 === err.code) {
+                    console.log(err);
                     reply(Boom.forbidden("please provide another user email"));
                 } else reply(Boom.forbidden(err)); // HTTP 403
             }
