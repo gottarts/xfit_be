@@ -3,7 +3,6 @@
 const Hapi = require('hapi');
 const Inert = require('inert');
 const Vision = require('vision');
-const HapiSwagger = require('hapi-swagger');
 const Pack = require('./package');
 const Config = require('./config/config');
 const Routes = require('./routes');
@@ -33,7 +32,7 @@ server.register([require('hapi-auth-jwt2'),
   Vision,
   Inert,
   {
-    'register': HapiSwagger,
+    'register': require('hapi-swagger'),
     'options': Config.swaggerOptions
   },
   {

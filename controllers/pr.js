@@ -12,9 +12,9 @@ exports.create = {
     auth: 'jwt',
     validate: {
         payload: {
-            user: Joi.string(),
-            skill: Joi.string(),
-            value: Joi.number(),
+            user: Joi.string().required(),
+            skill: Joi.string().required(),
+            value: Joi.number().required(),
             measure: Joi.string().valid('Kg')
         }
     },
