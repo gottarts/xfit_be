@@ -7,6 +7,7 @@ var Common = require ('./controllers/common');
 
 exports.endpoints = [
     { method: 'GET', path: '/', config: Common.welcomeMessage,  },
+    {method: 'GET', path: '/resources/icons/{param*}', config: Common.getIcon},
     //Auth methods
     { method: 'POST', path: '/v1/register', config: User.register },
     { method: 'POST', path: '/v1/login', config: User.login },
@@ -16,6 +17,7 @@ exports.endpoints = [
     
     //Skill methods
     { method: 'POST', path: '/v1/skill', config: Skill.create },
+    { method: 'POST', path: '/v1/skill/update', config: Skill.updateSkill },
     { method: 'GET', path: '/v1/skill', config: Skill.getSkills }, //GET tutte le skill
     { method: 'GET', path: '/v1/skill/{skillId}', config: Skill.getSkill }, //GET singola skill
         

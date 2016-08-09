@@ -3,11 +3,8 @@ var mongoose = require('mongoose'),
 
 
 var SkillSchema = new Schema({
-    name: {
-        type: String,
-        unique: true,
-        required: true
-    },
+    name: { type: String, unique: true, required: true },
+    icon: {type: String, unique: false, default: 'default_skill.png'}
 });
 
 // Metodi
@@ -16,8 +13,8 @@ SkillSchema.statics.saveSkill = function (requestData, callback) {
     this.create(requestData, callback);
 };
 
-SkillSchema.statics.updateSkill = function (user, callback) {
-    user.save(callback);
+SkillSchema.statics.updateSkill = function (skill, callback) {
+    skill.save(callback);
 };
 
 SkillSchema.statics.findSkillByName = function (name, callback) {

@@ -14,7 +14,8 @@ exports.create = {
     },
     validate: {
         payload: {
-            name: Joi.string().required()
+            name: Joi.string().required(),
+            icon: Joi.string()
         }
     },
     handler: function (request, reply) {
@@ -29,6 +30,36 @@ exports.create = {
         } else {
             reply(Boom.unauthorized("Only for admins"));
         }
+    }
+}
+
+exports.updateSkill = {
+    tags: ['api', 'Skill'],
+    auth:{
+        strategy: 'jwt',
+        scope: 'Admin'   
+    },
+    validate: {
+        payload: {
+            id: Joi.string().required(),
+            name: Joi.string(),
+            icon: Joi.string()
+        }
+    },
+    handler: function (request, reply) {
+        Skill.findSkillById(request.payload.id, function (err, skill) {
+            if (err) return reply(Boom.badImplementation(err));
+            if (skill === null) return reply(Boom.forbidden("Non autorizzato"));
+            skill.name = request.payload.name == null ? skill.name : request.payload.name;
+            skill.icon = request.payload.icon == null ? skill.icon : request.payload.icon;
+            
+            Skill.updateSkill(skill, function (err, skill) {
+                if (err) {
+                    return reply(Boom.badImplementation(err));
+                }
+                return reply(skill);
+            });
+        })
     }
 }
 
