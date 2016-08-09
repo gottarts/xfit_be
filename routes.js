@@ -1,7 +1,8 @@
 var User = require('./controllers/user');
 var Skill = require('./controllers/skill');
 var Pr = require('./controllers/pr');
-var Common = require ('./controllers/common')
+var NewsCategory = require('./controllers/newsCategory');
+var Common = require ('./controllers/common');
 
 
 exports.endpoints = [
@@ -21,5 +22,9 @@ exports.endpoints = [
     //Pr methods
     { method: 'POST', path: '/v1/pr', config: Pr.create },
     { method: 'GET', path: '/v1/pr', config: Pr.getAllSkillsForUser },
-    { method: 'GET', path: '/v1/pr/details', config: Pr.getSkillForUser }
+    { method: 'GET', path: '/v1/pr/details', config: Pr.getSkillForUser },
+
+    //NewsCategory methods
+    { method: 'POST', path: '/v1/newsCategory', config: NewsCategory.create },
+    { method: 'GET', path: '/v1/newsCategory', config: NewsCategory.getAllNewsCategory }
 ];
