@@ -32,7 +32,7 @@ PrSchema.statics.findPrById = function (id, callback) {
     }, callback);
 };
 
-var Pr = mongoose.model('UserSkill', PrSchema);
+var Pr = mongoose.model('Pr', PrSchema);
 
 /** export schema */
 module.exports = {

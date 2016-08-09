@@ -18,7 +18,7 @@ exports.endpoints = [
     { method: 'GET', path: '/v1/skill', config: Skill.getSkills }, //GET tutte le skill
     { method: 'GET', path: '/v1/skill/{skillId}', config: Skill.getSkill }, //GET singola skill
         
-    //UserSkill methods
+    //Pr methods
     { method: 'POST', path: '/v1/pr', config: Pr.create },
     { method: 'GET', path: '/v1/pr', config: Pr.getAllSkillsForUser },
     { method: 'GET', path: '/v1/pr/details', config: Pr.getSkillForUser }

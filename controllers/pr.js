@@ -37,6 +37,11 @@ exports.create = {
 exports.getAllSkillsForUser = {
     tags: ['api', 'Pr'],
     auth: 'jwt',
+    validate: {
+        query: {
+            user: Joi.string().required()
+        }
+    },
     handler: function(request, reply){
         Pr
         .find({ user: request.query.user})
@@ -54,6 +59,12 @@ exports.getAllSkillsForUser = {
 exports.getSkillForUser = {
     tags: ['api', 'Pr'],
     auth: 'jwt',
+    validate: {
+        query: {
+            user: Joi.string().required(),
+            skill: Joi.string().required()
+        }
+    },
     handler: function(request, reply){
         console.log(request.query);
         //console.log(request.query.user.toObjectId());
