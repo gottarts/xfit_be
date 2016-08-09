@@ -4,6 +4,7 @@ var Joi = require('joi'),
     Config = require('../config/config'),
     Jwt = require('jsonwebtoken'),
     NewsCategory = require('../models/newsCategory').NewsCategory;
+User = require('../models/user').User;
 var privateKey = Config.key.privateKey;
 
 exports.create = {
@@ -54,7 +55,6 @@ exports.getAllNewsCategory = {
     }
 }
 
-
 exports.getAllNewsCategoryForLocale = {
     tags: ['api', 'NewsCategory'],
     auth: 'jwt',
@@ -74,7 +74,7 @@ exports.getAllNewsCategoryForLocale = {
                     console.error(err);
                     return reply(Boom.badImplementation(err));
                 }
-                if(newsCategories.length == 0){
+                if (newsCategories.length == 0) {
                     return reply('No categories for selected locale')
                 }
                 return reply(newsCategories);
@@ -83,3 +83,43 @@ exports.getAllNewsCategoryForLocale = {
     }
 }
 
+exports.follow = {
+    tags: ['api', 'NewsCategory'],
+    auth: {
+        strategy: 'jwt'
+    },
+    validate: {
+        payload: {
+            user: Joi.string().required(),
+            newsCategory: Joi.string().required()
+        }
+    },
+    handler: function (request, reply) {
+        var credentials = request.auth.credentials;
+        Jwt.verify(request.auth.token.split(" ")[1], privateKey, function (err, decoded) {
+            if (credentials === undefined) return reply(Boom.forbidden("Non autorizzato"));
+            if (credentials.scope[0] != 'User' && credentials.scope[0] != 'Admin')
+                return reply(Boom.unauthorized("Only for users or admins"));
+
+            User.findUserById(request.payload.user, function (err, user) {
+                if (err) {
+                    console.error(err);
+                    return reply(Boom.badImplementation(err));
+                }
+                if (user === null)
+                    return reply(Boom.forbidden("Non autorizzato"));
+
+                user.newsCategories.push(request.payload.newsCategory);
+                User.updateUser(user, function (err, user) {
+                    if (err) {
+                        return reply(Boom.badImplementation(err));
+                    }
+                    return reply(user);
+                });
+
+            })
+
+
+        })
+    }
+}

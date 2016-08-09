@@ -29,5 +29,8 @@ exports.endpoints = [
     //NewsCategory methods
     { method: 'POST', path: '/v1/newsCategory', config: NewsCategory.create },
     { method: 'GET', path: '/v1/newsCategory', config: NewsCategory.getAllNewsCategory },
-    { method: 'GET', path: '/v1/newsCategory/{locale}', config: NewsCategory.getAllNewsCategoryForLocale }
+    { method: 'GET', path: '/v1/newsCategory/{locale}', config: NewsCategory.getAllNewsCategoryForLocale },
+
+    //User-NewsCategory methods
+    { method: 'POST', path: '/v1/newsCategory/follow', config: NewsCategory.follow }
 ];

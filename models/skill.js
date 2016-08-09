@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 
 var SkillSchema = new Schema({
     name: { type: String, unique: true, required: true },
-    icon: {type: String, unique: false, default: 'default_skill.png'}
+    image: {type: String, unique: false, default: 'default_skill.png'}
 });
 
 // Metodi

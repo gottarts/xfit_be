@@ -8,7 +8,8 @@ var User = new Schema({
     isVerified: { type: Boolean, default: false},
     username: { type: String, unique: true, required: false},
     picture: { type: String, required: false, default: "default_pic.png"},
-    description: {type: String, required: false}
+    description: {type: String, required: false},
+    newsCategories: [{ type : Schema.ObjectId, ref: 'NewsCategory' }],
 });
 
 User.statics.saveUser = function (requestData, callback) {
