@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 
 var NewsCategorySchema = new Schema({
     name: {type: String, unique: true, required: true},
-    icon: {type: String, unique: false, default: 'food.png'},
+    icon: {type: String, unique: false, default: 'default_newsCategory.png'},
     locale: {type: String, unique: false, default: 'en_EN'}
 });
 

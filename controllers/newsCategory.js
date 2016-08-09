@@ -54,20 +54,32 @@ exports.getAllNewsCategory = {
     }
 }
 
-// exports.getSkill = {
-//     tags: ['api', 'Skill'],
-//     auth: 'jwt',
-//     handler: function(request, reply){
-//         if (request.auth.credentials.scope[0] == 'Admin') {
-//             Skill.findSkillById(request.params.skillId, function(err, skill){
-//                 if (err) {
-//                     console.error(err);
-//                     return reply(Boom.badImplementation(err));
-//                 }
-//                 return reply(skill);
-//             })
-//         } else {
-//             reply(Boom.unauthorized("Only for admins"));
-//         }
-//     }
-// }
+
+exports.getAllNewsCategoryForLocale = {
+    tags: ['api', 'NewsCategory'],
+    auth: 'jwt',
+    validate: {
+        params: {
+            locale: Joi.string()
+        }
+    },
+    handler: function (request, reply) {
+        var credentials = request.auth.credentials;
+        Jwt.verify(request.auth.token.split(" ")[1], privateKey, function (err, decoded) {
+            if (credentials === undefined) return reply(Boom.forbidden("Non autorizzato"));
+            if (credentials.scope[0] != 'User' && credentials.scope[0] != 'Admin') return reply(Boom.unauthorized("Only for users or admins"));
+
+            NewsCategory.find({ locale: request.params.locale }, function (err, newsCategories) {
+                if (err) {
+                    console.error(err);
+                    return reply(Boom.badImplementation(err));
+                }
+                if(newsCategories.length == 0){
+                    return reply('No categories for selected locale')
+                }
+                return reply(newsCategories);
+            })
+        });
+    }
+}
+
