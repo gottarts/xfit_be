@@ -97,14 +97,24 @@ exports.profile = {
         Jwt.verify(request.auth.token.split(" ")[1], privateKey, function (err, decoded) {
             if (credentials === undefined) return reply(Boom.forbidden("Non autorizzato"));
             if (credentials.scope[0] != 'User' && credentials.scope[0] != 'Admin') return reply(Boom.unauthorized("Only for users or admins"));
-            User.findUserById(request.auth.credentials.id, function (err, user) {
-                if (err) {
-                    console.error(err);
-                    return reply(Boom.badImplementation(err));
-                }
-                if (user === null) return reply(Boom.forbidden("Non autorizzato"));
-                return reply(user);
-            })
+            // User.findUserById(request.auth.credentials.id, function (err, user) {
+            //     if (err) {
+            //         console.error(err);
+            //         return reply(Boom.badImplementation(err));
+            //     }
+            //     if (user === null) return reply(Boom.forbidden("Non autorizzato"));
+            //     return reply(user);
+            // })
+            User
+                .find({ _id: request.auth.credentials.id })
+                .populate('newsCategories')
+                .exec(function (err, us) {
+                    if (err) {
+                        reply(err);
+                    } else {
+                        reply(us);
+                    }
+                });
         });
     }
 }

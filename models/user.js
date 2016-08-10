@@ -23,7 +23,8 @@ User.statics.updateUser = function (user, callback) {
 User.statics.findUser = function (email, callback) {
     this.findOne({
         email: email
-    }, callback);
+    }, callback)
+    .populate('newsCategory');
 };
 
 User.statics.findUserById = function (id, callback) {
