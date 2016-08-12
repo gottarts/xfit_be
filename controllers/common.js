@@ -42,7 +42,7 @@ exports.welcomeMessage = {
     }
 };
 
-exports.getIcon = {
+exports.getResource = {
     auth:false,
     handler: {
         directory: {

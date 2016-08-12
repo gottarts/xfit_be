@@ -24,13 +24,13 @@ User.statics.findUser = function (email, callback) {
     this.findOne({
         email: email
     }, callback)
-    .populate('newsCategory');
 };
 
 User.statics.findUserById = function (id, callback) {
     this.findOne({
         _id: id
-    }, callback);
+    }, callback)
+    .populate('newsCategories');
 };
 
 var user = mongoose.model('User', User);

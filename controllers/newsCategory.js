@@ -108,18 +108,34 @@ exports.follow = {
                 }
                 if (user === null)
                     return reply(Boom.forbidden("Non autorizzato"));
+                if (isUserFollowing(user.newsCategories, request.payload.newsCategory)) {
+                    unfollowCategory(user.newsCategories, request.payload.newsCategory);
+                } else {
+                    user.newsCategories.push(request.payload.newsCategory);
+                }
 
-                user.newsCategories.push(request.payload.newsCategory);
                 User.updateUser(user, function (err, user) {
                     if (err) {
                         return reply(Boom.badImplementation(err));
                     }
                     return reply(user);
                 });
-
             })
-
-
         })
+    }
+}
+
+function isUserFollowing(arr, value) {
+    for (var i = 0, iLen = arr.length; i < iLen; i++) {
+        if (arr[i]._id == value) return true;
+    }
+    return false;
+}
+
+function unfollowCategory(arr, value) {
+    for (var i = arr.length; i > 0; i--) {
+        if (arr[i-1]._id == value) {
+            arr.splice(i-1,1);
+        }
     }
 }

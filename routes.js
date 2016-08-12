@@ -7,7 +7,7 @@ var Common = require('./controllers/common');
 
 exports.endpoints = [
     { method: 'GET', path: '/', config: Common.welcomeMessage, },
-    { method: 'GET', path: '/resources/icons/{param*}', config: Common.getIcon },
+    { method: 'GET', path: '/resources/{param*}', config: Common.getResource },
     //Auth methods
     { method: 'POST', path: '/v1/register', config: User.register },
     { method: 'POST', path: '/v1/login', config: User.login },
