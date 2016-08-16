@@ -4,7 +4,7 @@ var Joi = require('joi'),
     Config = require('../config/config'),
     Jwt = require('jsonwebtoken'),
     NewsCategory = require('../models/newsCategory').NewsCategory;
-User = require('../models/user').User;
+var User = require('../models/user').User;
 var privateKey = Config.key.privateKey;
 
 exports.create = {

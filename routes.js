@@ -2,6 +2,7 @@ var User = require('./controllers/user');
 var Skill = require('./controllers/skill');
 var Pr = require('./controllers/pr');
 var NewsCategory = require('./controllers/newsCategory');
+var News = require('./controllers/news');
 var Common = require('./controllers/common');
 
 
@@ -32,5 +33,10 @@ exports.endpoints = [
     { method: 'GET', path: '/v1/newsCategory/{locale}', config: NewsCategory.getAllNewsCategoryForLocale },
 
     //User-NewsCategory methods
-    { method: 'POST', path: '/v1/newsCategory/follow', config: NewsCategory.follow }
+    { method: 'POST', path: '/v1/newsCategory/follow', config: NewsCategory.follow },
+
+    //News methods
+    { method: 'POST', path: '/v1/news/create', config: News.create },
+    { method: 'GET', path: '/v1/news/{newsCategory}', config: News.getNewsByCategory },
+    { method: 'GET', path: '/v1/news/user/{user}', config: News.getNewsForUser }
 ];

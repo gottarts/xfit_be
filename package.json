@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "code": "^2.1.0",
-    "lab": "^8.2.0",
+    "lab": "^11.0.0",
     "nodemon": "^1.9.2"
   }
 }
